@@ -3,11 +3,21 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
+import '../constants/api_constants.dart';
+import '../../features/chat/repository/api_chat_repository.dart';
+import '../../features/chat/repository/api_chat_message_repository.dart';
+import '../../features/chat/repository/mock_chat_repository.dart';
+import '../../features/chat/repository/mock_chat_message_repository.dart';
 import '../../features/providers/control_page_provider.dart';
+import '../../features/providers/chat_list_provider.dart';
+import '../../features/providers/chat_messages_provider.dart';
 import '../../features/screens/custom_page_control/custom_page_control.dart';
 import '../../features/screens/home/home_screen.dart';
+import '../../features/screens/chat/chat_list_screen.dart';
+import '../../features/screens/chat/chat_detail_screen.dart';
 import '../../features/screens/splash/splash_screen.dart';
 import '../styles/app_theme_data.dart';
+import '../../features/chat/models/chat_thread.dart';
 
 class App extends StatefulWidget {
   const App({super.key});
@@ -29,10 +39,10 @@ class _AppState extends State<App> {
         routes: [
           GoRoute(
             path: '/home',
-            builder: (context, state) => HomeScreen(),
+            builder: (context, state) => const HomeScreen(),
             pageBuilder: (context, state) {
               return CustomTransitionPage<void>(
-                child: HomeScreen(),
+                child: const HomeScreen(),
                 transitionsBuilder:
                     (context, animation, secondaryAnimation, child) {
                       return child;
@@ -41,7 +51,7 @@ class _AppState extends State<App> {
             },
           ),
           GoRoute(
-            path: '/cart',
+            path: '/sell',
             builder: (context, state) => Scaffold(),
             pageBuilder: (context, state) {
               return CustomTransitionPage<void>(
@@ -54,11 +64,11 @@ class _AppState extends State<App> {
             },
           ),
           GoRoute(
-            path: '/orders',
-            builder: (context, state) => const Scaffold(),
+            path: '/chats',
+            builder: (context, state) => const ChatListScreen(),
             pageBuilder: (context, state) {
               return CustomTransitionPage<void>(
-                child: const Scaffold(),
+                child: const ChatListScreen(),
                 transitionsBuilder:
                     (context, animation, secondaryAnimation, child) {
                       return child;
@@ -85,14 +95,39 @@ class _AppState extends State<App> {
         path: '/splash',
         builder: (context, state) => const SplashScreen(),
       ),
+      GoRoute(
+        path: '/chat/:id',
+        builder: (context, state) {
+          final thread = state.extra;
+          return ChatDetailScreen(
+            threadId: state.pathParameters['id'] ?? '',
+            initialThread: thread is ChatThread ? thread : null,
+          );
+        },
+      ),
     ],
   );
 
   @override
   Widget build(BuildContext context) {
+    final chatRepository = ApiConstants.baseUrl.trim().isEmpty
+        ? const MockChatRepository()
+        : const ApiChatRepository();
+    final chatMessageRepository = ApiConstants.baseUrl.trim().isEmpty
+        ? const MockChatMessageRepository()
+        : const ApiChatMessageRepository();
+
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => PageControlProvider()),
+        ChangeNotifierProvider(
+          create: (context) =>
+              ChatListProvider(repository: chatRepository)..loadInitial(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) =>
+              ChatMessagesProvider(repository: chatMessageRepository),
+        ),
       ],
       child: ScreenUtilInit(
         designSize: const Size(375, 812),
