@@ -3,7 +3,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 enum StorageKeys {
   token('token'),
   notificationId('notificationId'),
-  languageCode('languageCode');
+  languageCode('languageCode'),
+  isFirstLaunch('isFirstLaunch');
 
   const StorageKeys(this.key);
   final String key;
@@ -30,5 +31,13 @@ class DBService {
 
   static set languageCode(String code) {
     $storage.setString(StorageKeys.languageCode.name, code);
+  }
+
+  static bool get isFirstLaunch {
+    return $storage.getBool(StorageKeys.isFirstLaunch.name) ?? true;
+  }
+
+  static set isFirstLaunch(bool value) {
+    $storage.setBool(StorageKeys.isFirstLaunch.name, value);
   }
 }

@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../constants/api_constants.dart';
+import '../service/db_service.dart';
 import '../../features/chat/repository/api_chat_repository.dart';
 import '../../features/chat/repository/api_chat_message_repository.dart';
 import '../../features/chat/repository/mock_chat_repository.dart';
@@ -31,6 +32,19 @@ final GlobalKey<NavigatorState> $navigatorKey = GlobalKey<NavigatorState>();
 class _AppState extends State<App> {
   final GoRouter _router = GoRouter(
     initialLocation: '/splash',
+    redirect: (context, state) {
+      final isFirstLaunch = DBService.isFirstLaunch;
+      final location = state.uri.path;
+
+      // Если не первый запуск и пользователь на splash, перенаправляем на home
+      if (!isFirstLaunch && location == '/splash') {
+        return '/home';
+      }
+
+      // Если первый запуск и пользователь не на splash, разрешаем доступ
+      // (splash screen сам обработает переход)
+      return null;
+    },
     routes: [
       ShellRoute(
         builder: (context, state, child) {

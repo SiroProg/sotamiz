@@ -18,6 +18,7 @@ class MockChatMessageRepository implements ChatMessageRepository {
   Future<ChatMessage> sendMessage({
     required String threadId,
     required String text,
+    String? replyToId,
   }) async {
     await Future<void>.delayed(const Duration(milliseconds: 200));
     return ChatMessage(
@@ -26,6 +27,43 @@ class MockChatMessageRepository implements ChatMessageRepository {
       text: text,
       createdAt: DateTime.now(),
       isMine: true,
+      replyToId: replyToId,
+    );
+  }
+
+  @override
+  Future<ChatMessage> sendImage({
+    required String threadId,
+    required String imagePath,
+  }) async {
+    await Future<void>.delayed(const Duration(milliseconds: 300));
+    return ChatMessage(
+      id: DateTime.now().microsecondsSinceEpoch.toString(),
+      threadId: threadId,
+      text: '[Фото]',
+      createdAt: DateTime.now(),
+      isMine: true,
+      type: ChatMessageType.image,
+      imagePath: imagePath,
+    );
+  }
+
+  @override
+  Future<ChatMessage> sendVoiceMessage({
+    required String threadId,
+    required String audioPath,
+    Duration? duration,
+  }) async {
+    await Future<void>.delayed(const Duration(milliseconds: 300));
+    return ChatMessage(
+      id: DateTime.now().microsecondsSinceEpoch.toString(),
+      threadId: threadId,
+      text: '[Голосовое сообщение]',
+      createdAt: DateTime.now(),
+      isMine: true,
+      type: ChatMessageType.voice,
+      audioPath: audioPath,
+      duration: duration,
     );
   }
 }

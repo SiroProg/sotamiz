@@ -441,9 +441,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
-import '../../../core/styles/app_colors.dart';
 import '../../../core/styles/svg_icons.dart';
 import '../../providers/control_page_provider.dart';
+import '../../providers/chat_list_provider.dart';
 
 class CustomPageControl extends StatefulWidget {
   final Widget child;
@@ -473,7 +473,7 @@ class _CustomPageControlState extends State<CustomPageControl> {
           height: Platform.isIOS ? 82.h : 70.h,
           child: const Column(
             children: [
-              Divider(height: 0, color: AppColors.colorFillContent),
+              Divider(height: 0, color: Color(0xFF1A1A1D)),
               CustomBottomNavigationBar(),
             ],
           ), // Панель навигации
@@ -492,36 +492,23 @@ class CustomBottomNavigationBar extends StatelessWidget {
       width: double.infinity,
       height: Platform.isIOS ? 82.h : 70.h,
       child: DecoratedBox(
-        decoration: BoxDecoration(
-          color: AppColors.white,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(10),
-            topRight: Radius.circular(10),
-          ),
-        ),
+        decoration: const BoxDecoration(color: Color(0xFF0B0B0C)),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             NavigateItem(
               iconFell: SvgIcons.homeFill,
-              color: AppColors.splashBac,
+              color: Colors.white,
               icon: SvgIcons.home,
               text: 'Главная',
               index: 0,
               path: '/home',
             ),
-            NavigateItem(
-              iconFell: SvgIcons.addFill,
-              color: AppColors.splashBac,
-              icon: SvgIcons.add,
-              text: 'Продать',
-              index: 1,
-              path: '/sell',
-            ),
-            NavigateItem(
+            _SellButton(index: 1, path: '/sell'),
+            NavigateItemWithBadge(
               iconFell: SvgIcons.chatFill,
-              color: AppColors.splashBac,
+              color: Colors.white,
               icon: SvgIcons.chat,
               text: 'Чаты',
               index: 2,
@@ -529,7 +516,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
             ),
             NavigateItem(
               iconFell: SvgIcons.userFill,
-              color: AppColors.splashBac,
+              color: Colors.white,
               icon: SvgIcons.user,
               text: 'Профиль',
               index: 3,
@@ -548,7 +535,7 @@ class NavigateItem extends StatelessWidget {
   final String iconFell;
   final String text;
   final Color color;
-  final String path; // Добавили путь
+  final String path;
 
   const NavigateItem({
     super.key,
@@ -557,46 +544,189 @@ class NavigateItem extends StatelessWidget {
     required this.index,
     required this.path,
     required this.color,
-    required this.iconFell, // Путь
+    required this.iconFell,
   });
 
   @override
   Widget build(BuildContext context) {
     final controlProvider = Provider.of<PageControlProvider>(context);
+    final isSelected = controlProvider.currentIndex == index;
+
     return GestureDetector(
       onTap: () {
         controlProvider.onBottomNavTapped(index, context);
         context.go(path);
       },
-      child: DecoratedBox(
-        decoration: const BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(10)),
-          color: AppColors.white,
-        ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SvgPicture.string(
-                controlProvider.currentIndex == index ? iconFell : icon,
-                width: controlProvider.currentIndex == index ? 24.w : 23.w,
-                height: controlProvider.currentIndex == index ? 24.h : 23.h,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SvgPicture.string(
+              isSelected ? iconFell : icon,
+              width: isSelected ? 24.w : 23.w,
+              height: isSelected ? 24.h : 23.h,
+              colorFilter: ColorFilter.mode(
+                isSelected ? color : Colors.white.withOpacity(0.6),
+                BlendMode.srcIn,
               ),
-              3.verticalSpace,
-              Text(
-                text,
-                style: TextStyle(
-                  color: controlProvider.currentIndex == index ? color : null,
-                  fontSize: 12.sp,
-                  fontWeight: controlProvider.currentIndex == index
-                      ? FontWeight.w600
-                      : FontWeight.w400,
+            ),
+            const SizedBox(height: 4),
+            Text(
+              text,
+              style: TextStyle(
+                color: isSelected ? color : Colors.white.withOpacity(0.6),
+                fontSize: 12.sp,
+                fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class NavigateItemWithBadge extends StatelessWidget {
+  final int index;
+  final String icon;
+  final String iconFell;
+  final String text;
+  final Color color;
+  final String path;
+
+  const NavigateItemWithBadge({
+    super.key,
+    required this.icon,
+    required this.text,
+    required this.index,
+    required this.path,
+    required this.color,
+    required this.iconFell,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final controlProvider = Provider.of<PageControlProvider>(context);
+    final chatProvider = context.watch<ChatListProvider>();
+    final isSelected = controlProvider.currentIndex == index;
+
+    // Подсчитываем общее количество непрочитанных сообщений
+    final unreadCount = chatProvider.threads.fold<int>(
+      0,
+      (sum, thread) => sum + thread.unreadCount,
+    );
+
+    return GestureDetector(
+      onTap: () {
+        controlProvider.onBottomNavTapped(index, context);
+        context.go(path);
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Stack(
+              clipBehavior: Clip.none,
+              children: [
+                SvgPicture.string(
+                  isSelected ? iconFell : icon,
+                  width: isSelected ? 24.w : 23.w,
+                  height: isSelected ? 24.h : 23.h,
+                  colorFilter: ColorFilter.mode(
+                    isSelected ? color : Colors.white.withOpacity(0.6),
+                    BlendMode.srcIn,
+                  ),
                 ),
+                if (unreadCount > 0)
+                  Positioned(
+                    top: -4,
+                    right: -4,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 5,
+                        vertical: 2,
+                      ),
+                      decoration: const BoxDecoration(
+                        color: Color(0xFFF44336),
+                        shape: BoxShape.circle,
+                      ),
+                      constraints: const BoxConstraints(
+                        minWidth: 16,
+                        minHeight: 16,
+                      ),
+                      child: Center(
+                        child: Text(
+                          unreadCount > 99 ? '99+' : '$unreadCount',
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 10,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+            const SizedBox(height: 4),
+            Text(
+              text,
+              style: TextStyle(
+                color: isSelected ? color : Colors.white.withOpacity(0.6),
+                fontSize: 12.sp,
+                fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
               ),
-            ],
-          ),
+            ),
+          ],
         ),
+      ),
+    );
+  }
+}
+
+class _SellButton extends StatelessWidget {
+  final int index;
+  final String path;
+
+  const _SellButton({required this.index, required this.path});
+
+  @override
+  Widget build(BuildContext context) {
+    final controlProvider = Provider.of<PageControlProvider>(context);
+    final isSelected = controlProvider.currentIndex == index;
+
+    return GestureDetector(
+      onTap: () {
+        controlProvider.onBottomNavTapped(index, context);
+        context.go(path);
+      },
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Container(
+            width: 48.w,
+            height: 48.h,
+            decoration: BoxDecoration(
+              color: const Color(0xFF1A1A1D),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Icon(Icons.add, color: Colors.white, size: 24.sp),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            'Продать',
+            style: TextStyle(
+              color: isSelected ? Colors.white : Colors.white.withOpacity(0.6),
+              fontSize: 12.sp,
+              fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
+            ),
+          ),
+        ],
       ),
     );
   }

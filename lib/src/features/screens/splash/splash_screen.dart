@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/router/app_navigation.dart';
+import '../../../core/service/db_service.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
@@ -71,7 +72,10 @@ class SplashScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
-                  onPressed: () => context.go(AppNavigation.home.path),
+                  onPressed: () {
+                    DBService.isFirstLaunch = false;
+                    context.go(AppNavigation.home.path);
+                  },
                   child: const Text(
                     'Начать',
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),

@@ -17,5 +17,17 @@ abstract class ChatMessageRepository {
   Future<ChatMessage> sendMessage({
     required String threadId,
     required String text,
+    String? replyToId,
+  });
+
+  Future<ChatMessage> sendImage({
+    required String threadId,
+    required String imagePath,
+  });
+
+  Future<ChatMessage> sendVoiceMessage({
+    required String threadId,
+    required String audioPath,
+    Duration? duration,
   });
 }

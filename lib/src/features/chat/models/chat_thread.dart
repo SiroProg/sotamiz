@@ -40,11 +40,13 @@ class ChatUser {
     required this.id,
     required this.name,
     required this.avatarUrl,
+    this.phoneNumber,
   });
 
   final String id;
   final String name;
   final String? avatarUrl;
+  final String? phoneNumber;
 
   factory ChatUser.fromJson(Map<String, dynamic> json) {
     return ChatUser(
@@ -53,6 +55,9 @@ class ChatUser {
       avatarUrl: (json['avatarUrl'] as String?)?.trim().isEmpty == true
           ? null
           : (json['avatarUrl'] as String?),
+      phoneNumber: (json['phoneNumber'] as String?)?.trim().isEmpty == true
+          ? null
+          : (json['phoneNumber'] as String?),
     );
   }
 }

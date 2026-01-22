@@ -69,15 +69,47 @@ class ChatMessagesProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> send(String threadId, String text) async {
+  Future<void> send(String threadId, String text, {String? replyToId}) async {
     if (text.trim().isEmpty) return;
     try {
-      final sent = await _repository.sendMessage(threadId: threadId, text: text.trim());
+      final sent = await _repository.sendMessage(
+        threadId: threadId,
+        text: text.trim(),
+        replyToId: replyToId,
+      );
       messages = [...messages, sent];
       notifyListeners();
     } catch (e) {
       errorMessage = e.toString();
       notifyListeners();
+    }
+  }
+
+  Future<void> sendImage(String threadId, String imagePath) async {
+    try {
+      final sent = await _repository.sendImage(threadId: threadId, imagePath: imagePath);
+      messages = [...messages, sent];
+      notifyListeners();
+    } catch (e) {
+      errorMessage = e.toString();
+      notifyListeners();
+      rethrow;
+    }
+  }
+
+  Future<void> sendVoiceMessage(String threadId, String audioPath, {Duration? duration}) async {
+    try {
+      final sent = await _repository.sendVoiceMessage(
+        threadId: threadId,
+        audioPath: audioPath,
+        duration: duration,
+      );
+      messages = [...messages, sent];
+      notifyListeners();
+    } catch (e) {
+      errorMessage = e.toString();
+      notifyListeners();
+      rethrow;
     }
   }
 }
