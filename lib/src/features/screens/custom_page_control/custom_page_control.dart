@@ -431,10 +431,6 @@
 //       ),
 //     );
 //   }
-// }
-
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -457,6 +453,9 @@ class CustomPageControl extends StatefulWidget {
 class _CustomPageControlState extends State<CustomPageControl> {
   @override
   Widget build(BuildContext context) {
+    final bottomNavHeight =
+        Theme.of(context).platform == TargetPlatform.iOS ? 82.h : 70.h;
+
     return WillPopScope(
       onWillPop: () async {
         if (Navigator.of(context).canPop()) {
@@ -470,11 +469,11 @@ class _CustomPageControlState extends State<CustomPageControl> {
         body: widget.child, // Отображаем дочерний маршрут
         bottomNavigationBar: SizedBox(
           width: double.infinity,
-          height: Platform.isIOS ? 82.h : 70.h,
-          child: const Column(
+          height: bottomNavHeight,
+          child: Column(
             children: [
-              Divider(height: 0, color: Color(0xFF1A1A1D)),
-              CustomBottomNavigationBar(),
+              const Divider(height: 0, color: Color(0xFF1A1A1D)),
+              CustomBottomNavigationBar(height: bottomNavHeight),
             ],
           ), // Панель навигации
         ),
@@ -484,13 +483,15 @@ class _CustomPageControlState extends State<CustomPageControl> {
 }
 
 class CustomBottomNavigationBar extends StatelessWidget {
-  const CustomBottomNavigationBar({super.key});
+  final double height;
+
+  const CustomBottomNavigationBar({super.key, required this.height});
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
-      height: Platform.isIOS ? 82.h : 70.h,
+      height: height,
       child: DecoratedBox(
         decoration: const BoxDecoration(color: Color(0xFF0B0B0C)),
         child: Row(

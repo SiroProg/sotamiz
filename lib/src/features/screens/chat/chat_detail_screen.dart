@@ -384,8 +384,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                 return NotificationListener<ScrollNotification>(
                   onNotification: (n) {
                     if (n.metrics.maxScrollExtent <= 0) return false;
-                    final nearBottom =
-                        n.metrics.pixels < 180; // top since reversed
+                    final nearBottom = n.metrics.pixels < 180;
                     if (nearBottom) {
                       provider.loadMore(widget.threadId);
                     }

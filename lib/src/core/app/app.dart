@@ -9,9 +9,12 @@ import '../../features/chat/repository/api_chat_repository.dart';
 import '../../features/chat/repository/api_chat_message_repository.dart';
 import '../../features/chat/repository/mock_chat_repository.dart';
 import '../../features/chat/repository/mock_chat_message_repository.dart';
+import '../../features/home/repository/api_home_repository.dart';
+import '../../features/home/repository/mock_home_repository.dart';
 import '../../features/providers/control_page_provider.dart';
 import '../../features/providers/chat_list_provider.dart';
 import '../../features/providers/chat_messages_provider.dart';
+import '../../features/providers/home_provider.dart';
 import '../../features/screens/custom_page_control/custom_page_control.dart';
 import '../../features/screens/home/home_screen.dart';
 import '../../features/screens/chat/chat_list_screen.dart';
@@ -130,6 +133,9 @@ class _AppState extends State<App> {
     final chatMessageRepository = ApiConstants.baseUrl.trim().isEmpty
         ? const MockChatMessageRepository()
         : const ApiChatMessageRepository();
+    final homeRepository = ApiConstants.baseUrl.trim().isEmpty
+        ? const MockHomeRepository()
+        : const ApiHomeRepository();
 
     return MultiProvider(
       providers: [
@@ -141,6 +147,9 @@ class _AppState extends State<App> {
         ChangeNotifierProvider(
           create: (context) =>
               ChatMessagesProvider(repository: chatMessageRepository),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => HomeProvider(repository: homeRepository),
         ),
       ],
       child: ScreenUtilInit(
