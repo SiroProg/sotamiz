@@ -5,7 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
-import 'package:image_gallery_saver/image_gallery_saver.dart';
+import 'package:image_gallery_saver_plus/image_gallery_saver_plus.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
@@ -886,7 +886,7 @@ class _FullScreenImageView extends StatelessWidget {
           options: Options(responseType: ResponseType.bytes),
         );
         if (response.data != null) {
-          final result = await ImageGallerySaver.saveImage(
+          final result = await ImageGallerySaverPlus.saveImage(
             Uint8List.fromList(response.data!),
             quality: 100,
           );
@@ -907,7 +907,7 @@ class _FullScreenImageView extends StatelessWidget {
           }
         }
       } else {
-        final result = await ImageGallerySaver.saveFile(imagePath);
+        final result = await ImageGallerySaverPlus.saveFile(imagePath);
         if (result['isSuccess'] == true && context.mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
