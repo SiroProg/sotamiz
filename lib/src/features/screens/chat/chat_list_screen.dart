@@ -3,8 +3,8 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 
-import '../../chat/models/chat_thread.dart';
 import '../../providers/chat_list_provider.dart';
+import 'models/chat_thread.dart';
 
 class ChatListScreen extends StatelessWidget {
   const ChatListScreen({super.key});

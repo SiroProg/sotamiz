@@ -1,5 +1,5 @@
-class Banner {
-  const Banner({
+class Baner {
+  const Baner({
     required this.id,
     required this.imageUrl,
     this.title,
@@ -11,8 +11,8 @@ class Banner {
   final String? title;
   final String? link;
 
-  factory Banner.fromJson(Map<String, dynamic> json) {
-    return Banner(
+  factory Baner.fromJson(Map<String, dynamic> json) {
+    return Baner(
       id: (json['id'] ?? '').toString(),
       imageUrl: (json['imageUrl'] ?? '').toString(),
       title: (json['title'] as String?)?.trim().isEmpty == true
@@ -25,11 +25,6 @@ class Banner {
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'imageUrl': imageUrl,
-      'title': title,
-      'link': link,
-    };
+    return {'id': id, 'imageUrl': imageUrl, 'title': title, 'link': link};
   }
 }

@@ -1,13 +1,10 @@
-import '../models/product.dart';
-import '../models/category.dart';
 import '../models/banner.dart';
+import '../models/category.dart';
 import '../models/location.dart';
+import '../models/product.dart';
 
 class ProductListPage {
-  const ProductListPage({
-    required this.items,
-    required this.nextCursor,
-  });
+  const ProductListPage({required this.items, required this.nextCursor});
 
   final List<Product> items;
   final String? nextCursor;
@@ -15,7 +12,7 @@ class ProductListPage {
 
 abstract class HomeRepository {
   Future<List<ProductCategory>> fetchCategories();
-  Future<List<Banner>> fetchBanners();
+  Future<List<Baner>> fetchBanners();
   Future<ProductListPage> fetchProducts({
     String? cursor,
     int limit = 20,

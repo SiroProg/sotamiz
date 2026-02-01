@@ -1,21 +1,20 @@
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:record/record.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:image_gallery_saver/image_gallery_saver.dart';
 
-import '../../chat/models/chat_message.dart';
-import '../../chat/models/chat_thread.dart';
 import '../../providers/chat_messages_provider.dart';
+import 'models/chat_message.dart';
+import 'models/chat_thread.dart';
 
 class ChatDetailScreen extends StatefulWidget {
   const ChatDetailScreen({

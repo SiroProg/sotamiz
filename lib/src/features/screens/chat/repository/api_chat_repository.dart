@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import '../../../core/service/api_service.dart';
+import '../../../../core/service/api_service.dart';
 import '../models/chat_thread.dart';
 import 'chat_repository.dart';
 

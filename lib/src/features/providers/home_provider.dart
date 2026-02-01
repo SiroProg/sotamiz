@@ -1,10 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 
-import '../home/models/product.dart';
-import '../home/models/category.dart';
-import '../home/models/banner.dart';
-import '../home/models/location.dart';
-import '../home/repository/home_repository.dart';
+import '../screens/home/models/banner.dart';
+import '../screens/home/models/category.dart';
+import '../screens/home/models/location.dart';
+import '../screens/home/models/product.dart';
+import '../screens/home/repository/home_repository.dart';
 
 enum LoadStatus { idle, loading, loaded, error }
 
@@ -21,7 +22,7 @@ class HomeProvider extends ChangeNotifier {
   // Баннеры
   LoadStatus bannersStatus = LoadStatus.idle;
   String? bannersErrorMessage;
-  List<Banner> banners = const [];
+  List<Baner> banners = const [];
 
   // Товары
   LoadStatus productsStatus = LoadStatus.idle;

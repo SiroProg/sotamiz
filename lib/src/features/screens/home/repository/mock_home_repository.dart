@@ -1,9 +1,9 @@
 import 'dart:async';
 
-import '../models/product.dart';
-import '../models/category.dart';
 import '../models/banner.dart';
+import '../models/category.dart';
 import '../models/location.dart';
+import '../models/product.dart';
 import 'home_repository.dart';
 
 /// Mock репозиторий для разработки без бэкенда.
@@ -26,15 +26,9 @@ class MockHomeRepository implements HomeRepository {
   }
 
   @override
-  Future<List<Banner>> fetchBanners() async {
+  Future<List<Baner>> fetchBanners() async {
     await Future.delayed(const Duration(milliseconds: 300));
-    return const [
-      Banner(
-        id: '1',
-        imageUrl: '',
-        title: 'Рекламный баннер',
-      ),
-    ];
+    return const [Baner(id: '1', imageUrl: '', title: 'Рекламный баннер')];
   }
 
   @override
@@ -104,13 +98,19 @@ class MockHomeRepository implements HomeRepository {
     // Фильтрация по поисковому запросу, если указан
     final searchFilteredProducts = searchQuery != null && searchQuery.isNotEmpty
         ? locationFilteredProducts
-            .where((p) => p.title.toLowerCase().contains(searchQuery.toLowerCase()))
-            .toList()
+              .where(
+                (p) =>
+                    p.title.toLowerCase().contains(searchQuery.toLowerCase()),
+              )
+              .toList()
         : locationFilteredProducts;
 
     // Пагинация
     final startIndex = cursor != null ? int.tryParse(cursor) ?? 0 : 0;
-    final endIndex = (startIndex + limit).clamp(0, searchFilteredProducts.length);
+    final endIndex = (startIndex + limit).clamp(
+      0,
+      searchFilteredProducts.length,
+    );
     final paginatedProducts = searchFilteredProducts.sublist(
       startIndex.clamp(0, searchFilteredProducts.length),
       endIndex,
@@ -120,10 +120,7 @@ class MockHomeRepository implements HomeRepository {
         ? endIndex.toString()
         : null;
 
-    return ProductListPage(
-      items: paginatedProducts,
-      nextCursor: nextCursor,
-    );
+    return ProductListPage(items: paginatedProducts, nextCursor: nextCursor);
   }
 
   @override

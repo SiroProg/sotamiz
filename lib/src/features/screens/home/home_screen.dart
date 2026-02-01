@@ -3,9 +3,9 @@ import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../providers/home_provider.dart';
-import '../../home/models/product.dart';
-import '../../home/models/category.dart';
-import '../../home/models/location.dart';
+import 'models/category.dart';
+import 'models/location.dart';
+import 'models/product.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -66,7 +66,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               children: [
                                 _SearchBar(
                                   controller: _searchController,
-                                  onSearchChanged: (query) => provider.setSearchQuery(query),
+                                  onSearchChanged: (query) =>
+                                      provider.setSearchQuery(query),
                                 ),
                                 const SizedBox(height: 16),
                                 _CategoriesSection(provider: provider),
@@ -112,10 +113,10 @@ class _Header extends StatelessWidget {
           Text(
             'Sotamiz',
             style: Theme.of(context).textTheme.displayLarge?.copyWith(
-                  color: Colors.white,
-                  fontSize: 24,
-                  fontWeight: FontWeight.w800,
-                ),
+              color: Colors.white,
+              fontSize: 24,
+              fontWeight: FontWeight.w800,
+            ),
           ),
           const Spacer(),
           GestureDetector(
@@ -136,7 +137,11 @@ class _Header extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: 4),
-                const Icon(Icons.keyboard_arrow_down, color: Colors.white, size: 18),
+                const Icon(
+                  Icons.keyboard_arrow_down,
+                  color: Colors.white,
+                  size: 18,
+                ),
               ],
             ),
           ),
@@ -172,10 +177,7 @@ class _Header extends StatelessWidget {
 }
 
 class _SearchBar extends StatelessWidget {
-  const _SearchBar({
-    required this.controller,
-    required this.onSearchChanged,
-  });
+  const _SearchBar({required this.controller, required this.onSearchChanged});
 
   final TextEditingController controller;
   final Function(String?) onSearchChanged;
@@ -198,7 +200,10 @@ class _SearchBar extends StatelessWidget {
             borderRadius: BorderRadius.circular(12),
             borderSide: BorderSide.none,
           ),
-          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 16,
+            vertical: 12,
+          ),
         ),
       ),
     );
@@ -294,11 +299,7 @@ class _CategoryItem extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              _getIcon(category.icon),
-              color: Colors.white,
-              size: 28,
-            ),
+            Icon(_getIcon(category.icon), color: Colors.white, size: 28),
             const SizedBox(height: 8),
             Text(
               category.name,
@@ -329,7 +330,8 @@ class _BannerSection extends StatelessWidget {
       return const _BannerShimmer();
     }
 
-    if (provider.bannersStatus == LoadStatus.error || provider.banners.isEmpty) {
+    if (provider.bannersStatus == LoadStatus.error ||
+        provider.banners.isEmpty) {
       return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Container(
@@ -362,7 +364,9 @@ class _BannerSection extends StatelessWidget {
         ),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(12),
-          child: provider.banners.first.imageUrl != null && provider.banners.first.imageUrl!.isNotEmpty
+          child:
+              provider.banners.first.imageUrl != null &&
+                  provider.banners.first.imageUrl!.isNotEmpty
               ? Image.network(
                   provider.banners.first.imageUrl!,
                   fit: BoxFit.cover,
@@ -419,10 +423,10 @@ class _NewTodaySection extends StatelessWidget {
               Text(
                 'Новые сегодня',
                 style: Theme.of(context).textTheme.displayLarge?.copyWith(
-                      color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.w800,
-                    ),
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w800,
+                ),
               ),
               const SizedBox(height: 4),
               Text(
@@ -462,10 +466,7 @@ class _ProductsList extends StatelessWidget {
   Widget build(BuildContext context) {
     if (provider.productsStatus == LoadStatus.loading) {
       return const SliverToBoxAdapter(
-        child: Padding(
-          padding: EdgeInsets.all(16),
-          child: _ProductsShimmer(),
-        ),
+        child: Padding(padding: EdgeInsets.all(16), child: _ProductsShimmer()),
       );
     }
 
@@ -517,7 +518,9 @@ class _ProductsList extends StatelessWidget {
             if (index == provider.products.length) {
               if (provider.canLoadMore) {
                 provider.loadMore();
-                return Center(child: CircularProgressIndicator(color: Colors.white));
+                return Center(
+                  child: CircularProgressIndicator(color: Colors.white),
+                );
               }
               return const SizedBox.shrink();
             }
@@ -554,13 +557,17 @@ class _ProductCard extends StatelessWidget {
               child: Stack(
                 children: [
                   ClipRRect(
-                    borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
-                    child: product.imageUrl != null && product.imageUrl!.isNotEmpty
+                    borderRadius: const BorderRadius.vertical(
+                      top: Radius.circular(12),
+                    ),
+                    child:
+                        product.imageUrl != null && product.imageUrl!.isNotEmpty
                         ? Image.network(
                             product.imageUrl!,
                             width: double.infinity,
                             fit: BoxFit.cover,
-                            errorBuilder: (_, __, ___) => _ProductImagePlaceholder(),
+                            errorBuilder: (_, __, ___) =>
+                                _ProductImagePlaceholder(),
                           )
                         : _ProductImagePlaceholder(),
                   ),
@@ -568,7 +575,10 @@ class _ProductCard extends StatelessWidget {
                     top: 8,
                     right: 8,
                     child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 4,
+                      ),
                       decoration: BoxDecoration(
                         color: Colors.black.withOpacity(0.6),
                         borderRadius: BorderRadius.circular(8),
@@ -615,7 +625,11 @@ class _ProductCard extends StatelessWidget {
                       ),
                       IconButton(
                         onPressed: () {},
-                        icon: const Icon(Icons.chat_bubble_outline, color: Colors.white70, size: 18),
+                        icon: const Icon(
+                          Icons.chat_bubble_outline,
+                          color: Colors.white70,
+                          size: 18,
+                        ),
                         padding: EdgeInsets.zero,
                         constraints: const BoxConstraints(),
                       ),
@@ -624,7 +638,11 @@ class _ProductCard extends StatelessWidget {
                   const SizedBox(height: 4),
                   Row(
                     children: [
-                      const Icon(Icons.location_on, color: Colors.white70, size: 14),
+                      const Icon(
+                        Icons.location_on,
+                        color: Colors.white70,
+                        size: 14,
+                      ),
                       const SizedBox(width: 4),
                       Expanded(
                         child: Text(
