@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../chat/models/chat_thread.dart';
 import '../../providers/chat_list_provider.dart';
@@ -61,7 +62,7 @@ class ChatListScreen extends StatelessWidget {
                           return false;
                         },
                         child: ListView.separated(
-                          padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
+                          padding: EdgeInsets.fromLTRB(16.w, 8.h, 16.w, 24.h),
                           itemBuilder: (context, index) {
                             if (index == provider.threads.length) {
                               return provider.isLoadingMore
@@ -70,8 +71,7 @@ class ChatListScreen extends StatelessWidget {
                             }
                             return _ChatCard(thread: provider.threads[index]);
                           },
-                          separatorBuilder: (_, __) =>
-                              const SizedBox(height: 12),
+                          separatorBuilder: (_, __) => SizedBox(height: 12.h),
                           itemCount: provider.threads.length + 1,
                         ),
                       ),
@@ -95,7 +95,7 @@ class _Header extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
+      padding: EdgeInsets.fromLTRB(16.w, 12.h, 16.w, 12.h),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -105,30 +105,30 @@ class _Header extends StatelessWidget {
                 'Сообщения',
                 style: Theme.of(context).textTheme.displayLarge?.copyWith(
                   color: Colors.white,
-                  fontSize: 32,
+                  fontSize: 32.sp,
                   fontWeight: FontWeight.w800,
                 ),
               ),
               const Spacer(),
               IconButton(
                 onPressed: () {},
-                icon: const Icon(Icons.search, color: Colors.white),
+                icon: Icon(Icons.search, color: Colors.white, size: 22.r),
                 style: IconButton.styleFrom(
                   backgroundColor: const Color(0xFF17171A),
-                  padding: const EdgeInsets.all(12),
+                  padding: EdgeInsets.all(12.w),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(14),
+                    borderRadius: BorderRadius.circular(14.r),
                   ),
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 6),
+          SizedBox(height: 6.h),
           Text(
             '$total активных диалогов',
             style: TextStyle(
               color: Colors.white.withOpacity(0.65),
-              fontSize: 14,
+              fontSize: 14.sp,
               fontWeight: FontWeight.w600,
             ),
           ),
@@ -146,27 +146,27 @@ class _ChatCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      borderRadius: BorderRadius.circular(18),
+      borderRadius: BorderRadius.circular(18.r),
       onTap: () => context.go('/chat/${thread.id}', extra: thread),
       child: DecoratedBox(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(18),
+          borderRadius: BorderRadius.circular(18.r),
           gradient: const LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [Color(0xFF16161A), Color(0xFF0F0F12)],
           ),
-          border: Border.all(color: Colors.white.withOpacity(0.08), width: 1),
+          border: Border.all(color: Colors.white.withOpacity(0.08), width: 1.w),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.35),
-              blurRadius: 12,
-              offset: const Offset(0, 8),
+              blurRadius: 12.r,
+              offset: Offset(0, 8.h),
             ),
           ],
         ),
         child: Padding(
-          padding: const EdgeInsets.all(14),
+          padding: EdgeInsets.all(14.w),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -174,7 +174,7 @@ class _ChatCard extends StatelessWidget {
                 url: thread.peer.avatarUrl,
                 isOnline: thread.isPeerOnline,
               ),
-              const SizedBox(width: 12),
+              SizedBox(width: 12.w),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -186,41 +186,41 @@ class _ChatCard extends StatelessWidget {
                             thread.peer.name,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(
+                            style: TextStyle(
                               color: Colors.white,
-                              fontSize: 18,
+                              fontSize: 18.sp,
                               fontWeight: FontWeight.w800,
                             ),
                           ),
                         ),
-                        const SizedBox(width: 10),
+                        SizedBox(width: 10.w),
                         Text(
                           _formatRelativeTime(thread.lastMessageAt),
                           style: TextStyle(
                             color: Colors.white.withOpacity(0.55),
-                            fontSize: 14,
+                            fontSize: 14.sp,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
                         if (thread.unreadCount > 0) ...[
-                          const SizedBox(width: 10),
+                          SizedBox(width: 10.w),
                           _UnreadBadge(count: thread.unreadCount),
                         ],
                       ],
                     ),
-                    const SizedBox(height: 6),
+                    SizedBox(height: 6.h),
                     Text(
                       thread.lastMessage.text,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         color: Colors.white.withOpacity(0.92),
-                        fontSize: 16,
+                        fontSize: 16.sp,
                         fontWeight: FontWeight.w700,
                       ),
                     ),
                     if (thread.listing != null) ...[
-                      const SizedBox(height: 12),
+                      SizedBox(height: 12.h),
                       _ListingChip(listing: thread.listing!),
                     ],
                   ],
@@ -243,22 +243,22 @@ class _ListingChip extends StatelessWidget {
     return DecoratedBox(
       decoration: BoxDecoration(
         color: Colors.white.withOpacity(0.04),
-        borderRadius: BorderRadius.circular(14),
+        borderRadius: BorderRadius.circular(14.r),
         border: Border.all(color: Colors.white.withOpacity(0.06)),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(10),
+        padding: EdgeInsets.all(10.w),
         child: Row(
           children: [
             ClipRRect(
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(10.r),
               child: _NetworkOrPlaceholder(
                 url: listing.imageUrl,
-                width: 72,
-                height: 60,
+                width: 72.w,
+                height: 60.h,
               ),
             ),
-            const SizedBox(width: 10),
+            SizedBox(width: 10.w),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -269,16 +269,16 @@ class _ListingChip extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                       color: Colors.white.withOpacity(0.6),
-                      fontSize: 15,
+                      fontSize: 15.sp,
                       fontWeight: FontWeight.w700,
                     ),
                   ),
-                  const SizedBox(height: 6),
+                  SizedBox(height: 6.h),
                   Text(
                     listing.priceText,
-                    style: const TextStyle(
+                    style: TextStyle(
                       color: Colors.white,
-                      fontSize: 16,
+                      fontSize: 16.sp,
                       fontWeight: FontWeight.w800,
                     ),
                   ),
@@ -304,21 +304,21 @@ class _Avatar extends StatelessWidget {
       clipBehavior: Clip.none,
       children: [
         ClipRRect(
-          borderRadius: BorderRadius.circular(18),
-          child: _NetworkOrPlaceholder(url: url, width: 58, height: 58),
+          borderRadius: BorderRadius.circular(18.r),
+          child: _NetworkOrPlaceholder(url: url, width: 58.w, height: 58.h),
         ),
         Positioned(
-          bottom: -2,
-          right: -2,
+          bottom: -2.h,
+          right: -2.w,
           child: Container(
-            width: 16,
-            height: 16,
+            width: 16.r,
+            height: 16.r,
             decoration: BoxDecoration(
               color: isOnline
                   ? const Color(0xFF3FE972)
                   : const Color(0xFF2A2A2E),
               shape: BoxShape.circle,
-              border: Border.all(color: const Color(0xFF0B0B0C), width: 2),
+              border: Border.all(color: const Color(0xFF0B0B0C), width: 2.w),
             ),
           ),
         ),
@@ -334,16 +334,16 @@ class _UnreadBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+      padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 6.h),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(999),
+        borderRadius: BorderRadius.circular(999.r),
       ),
       child: Text(
         '$count',
-        style: const TextStyle(
+        style: TextStyle(
           color: Colors.black,
-          fontSize: 13,
+          fontSize: 13.sp,
           fontWeight: FontWeight.w900,
         ),
       ),
@@ -373,7 +373,7 @@ class _NetworkOrPlaceholder extends StatelessWidget {
         child: Icon(
           Icons.image_outlined,
           color: Colors.white.withOpacity(0.5),
-          size: 18,
+          size: 18.r,
         ),
       );
     }
@@ -391,7 +391,7 @@ class _NetworkOrPlaceholder extends StatelessWidget {
         child: Icon(
           Icons.broken_image_outlined,
           color: Colors.white.withOpacity(0.5),
-          size: 18,
+          size: 18.r,
         ),
       ),
     );
@@ -404,9 +404,9 @@ class _LoadingList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
-      padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
+      padding: EdgeInsets.fromLTRB(16.w, 8.h, 16.w, 24.h),
       itemBuilder: (context, index) => const _ShimmerChatCard(),
-      separatorBuilder: (_, __) => const SizedBox(height: 12),
+      separatorBuilder: (_, __) => SizedBox(height: 12.h),
       itemCount: 6,
     );
   }
@@ -421,10 +421,10 @@ class _ShimmerChatCard extends StatelessWidget {
       baseColor: const Color(0xFF1A1A1D),
       highlightColor: const Color(0xFF2A2A2E),
       child: Container(
-        height: 116,
+        height: 116.h,
         decoration: BoxDecoration(
           color: const Color(0xFF1A1A1D),
-          borderRadius: BorderRadius.circular(18),
+          borderRadius: BorderRadius.circular(18.r),
         ),
       ),
     );
@@ -441,48 +441,48 @@ class _ErrorState extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24),
+        padding: EdgeInsets.symmetric(horizontal: 24.w),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(
               Icons.wifi_off,
               color: Colors.white.withOpacity(0.8),
-              size: 44,
+              size: 44.r,
             ),
-            const SizedBox(height: 14),
+            SizedBox(height: 14.h),
             Text(
               'Не удалось загрузить чаты',
               style: TextStyle(
                 color: Colors.white.withOpacity(0.95),
-                fontSize: 18,
+                fontSize: 18.sp,
                 fontWeight: FontWeight.w800,
               ),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 8),
+            SizedBox(height: 8.h),
             Text(
               message,
               style: TextStyle(
                 color: Colors.white.withOpacity(0.6),
-                fontSize: 14,
+                fontSize: 14.sp,
                 fontWeight: FontWeight.w500,
               ),
               textAlign: TextAlign.center,
               maxLines: 3,
               overflow: TextOverflow.ellipsis,
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: 16.h),
             FilledButton(
               style: FilledButton.styleFrom(
                 backgroundColor: Colors.white,
                 foregroundColor: Colors.black,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 18,
-                  vertical: 14,
+                padding: EdgeInsets.symmetric(
+                  horizontal: 18.w,
+                  vertical: 14.h,
                 ),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(14),
+                  borderRadius: BorderRadius.circular(14.r),
                 ),
               ),
               onPressed: onRetry,
@@ -502,31 +502,31 @@ class _EmptyState extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24),
+        padding: EdgeInsets.symmetric(horizontal: 24.w),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(
               Icons.chat_bubble_outline,
               color: Colors.white.withOpacity(0.7),
-              size: 44,
+              size: 44.r,
             ),
-            const SizedBox(height: 14),
+            SizedBox(height: 14.h),
             Text(
               'Пока нет сообщений',
               style: TextStyle(
                 color: Colors.white.withOpacity(0.95),
-                fontSize: 18,
+                fontSize: 18.sp,
                 fontWeight: FontWeight.w800,
               ),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 8),
+            SizedBox(height: 8.h),
             Text(
               'Когда кто-то напишет вам по объявлению, диалог появится здесь.',
               style: TextStyle(
                 color: Colors.white.withOpacity(0.6),
-                fontSize: 14,
+                fontSize: 14.sp,
                 fontWeight: FontWeight.w500,
               ),
               textAlign: TextAlign.center,
@@ -544,11 +544,11 @@ class _LoadMoreIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 10),
+      padding: EdgeInsets.only(top: 10.h),
       child: Center(
         child: SizedBox(
-          width: 22,
-          height: 22,
+          width: 22.w,
+          height: 22.w,
           child: CircularProgressIndicator(
             strokeWidth: 2.4,
             color: Colors.white.withOpacity(0.85),

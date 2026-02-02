@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../providers/home_provider.dart';
@@ -64,19 +65,19 @@ class _HomeScreenState extends State<HomeScreen> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                _SearchBar(
-                                  controller: _searchController,
-                                  onSearchChanged: (query) => provider.setSearchQuery(query),
-                                ),
-                                const SizedBox(height: 16),
-                                _CategoriesSection(provider: provider),
-                                const SizedBox(height: 16),
-                                _BannerSection(provider: provider),
-                                const SizedBox(height: 24),
-                                _NewTodaySection(provider: provider),
-                              ],
-                            ),
+                              _SearchBar(
+                                controller: _searchController,
+                                onSearchChanged: (query) => provider.setSearchQuery(query),
+                              ),
+                              SizedBox(height: 16.h),
+                              _CategoriesSection(provider: provider),
+                              SizedBox(height: 16.h),
+                              _BannerSection(provider: provider),
+                              SizedBox(height: 24.h),
+                              _NewTodaySection(provider: provider),
+                            ],
                           ),
+                        ),
                           _ProductsList(provider: provider),
                         ],
                       ),
@@ -106,16 +107,16 @@ class _Header extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
+      padding: EdgeInsets.fromLTRB(16.w, 12.h, 16.w, 12.h),
       child: Row(
         children: [
           Text(
             'Sotamiz',
             style: Theme.of(context).textTheme.displayLarge?.copyWith(
-                  color: Colors.white,
-                  fontSize: 24,
-                  fontWeight: FontWeight.w800,
-                ),
+              color: Colors.white,
+              fontSize: 24.sp,
+              fontWeight: FontWeight.w800,
+            ),
           ),
           const Spacer(),
           GestureDetector(
@@ -125,33 +126,33 @@ class _Header extends StatelessWidget {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Icon(Icons.location_on, color: Colors.white, size: 18),
-                const SizedBox(width: 4),
+                Icon(Icons.location_on, color: Colors.white, size: 18.r),
+                SizedBox(width: 4.w),
                 Text(
                   selectedLocation?.name ?? 'Центр',
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: Colors.white,
-                    fontSize: 14,
+                    fontSize: 14.sp,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
-                const SizedBox(width: 4),
-                const Icon(Icons.keyboard_arrow_down, color: Colors.white, size: 18),
+                SizedBox(width: 4.w),
+                Icon(Icons.keyboard_arrow_down, color: Colors.white, size: 18.r),
               ],
             ),
           ),
-          const SizedBox(width: 12),
+          SizedBox(width: 12.w),
           IconButton(
             onPressed: () {},
             icon: Stack(
               children: [
-                const Icon(Icons.notifications_outlined, color: Colors.white),
+                Icon(Icons.notifications_outlined, color: Colors.white, size: 22.r),
                 Positioned(
                   right: 0,
                   top: 0,
                   child: Container(
-                    width: 8,
-                    height: 8,
+                    width: 8.r,
+                    height: 8.r,
                     decoration: const BoxDecoration(
                       color: Colors.red,
                       shape: BoxShape.circle,
@@ -163,7 +164,7 @@ class _Header extends StatelessWidget {
           ),
           IconButton(
             onPressed: () {},
-            icon: const Icon(Icons.favorite_border, color: Colors.white),
+            icon: Icon(Icons.favorite_border, color: Colors.white, size: 22.r),
           ),
         ],
       ),
@@ -183,7 +184,7 @@ class _SearchBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      padding: EdgeInsets.symmetric(horizontal: 16.w),
       child: TextField(
         controller: controller,
         onChanged: (value) => onSearchChanged(value.isEmpty ? null : value),
@@ -195,10 +196,10 @@ class _SearchBar extends StatelessWidget {
           filled: true,
           fillColor: const Color(0xFF1A1A1D),
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(12.r),
             borderSide: BorderSide.none,
           ),
-          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
         ),
       ),
     );
@@ -221,14 +222,14 @@ class _CategoriesSection extends StatelessWidget {
     }
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      padding: EdgeInsets.symmetric(horizontal: 16.w),
       child: GridView.builder(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 4,
-          crossAxisSpacing: 12,
-          mainAxisSpacing: 12,
+          crossAxisSpacing: 12.w,
+          mainAxisSpacing: 12.h,
           childAspectRatio: 0.85,
         ),
         itemCount: provider.categories.length,
@@ -286,9 +287,9 @@ class _CategoryItem extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           color: const Color(0xFF1A1A1D),
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(12.r),
           border: isSelected
-              ? Border.all(color: Colors.white.withOpacity(0.3), width: 1)
+              ? Border.all(color: Colors.white.withOpacity(0.3), width: 1.w)
               : null,
         ),
         child: Column(
@@ -297,15 +298,15 @@ class _CategoryItem extends StatelessWidget {
             Icon(
               _getIcon(category.icon),
               color: Colors.white,
-              size: 28,
+              size: 28.r,
             ),
-            const SizedBox(height: 8),
+            SizedBox(height: 8.h),
             Text(
               category.name,
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: Colors.white.withOpacity(0.9),
-                fontSize: 12,
+                fontSize: 12.sp,
                 fontWeight: FontWeight.w600,
               ),
               maxLines: 2,
@@ -331,19 +332,19 @@ class _BannerSection extends StatelessWidget {
 
     if (provider.bannersStatus == LoadStatus.error || provider.banners.isEmpty) {
       return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
+        padding: EdgeInsets.symmetric(horizontal: 16.w),
         child: Container(
-          height: 120,
+          height: 120.h,
           decoration: BoxDecoration(
             color: const Color(0xFF1A1A1D),
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(12.r),
           ),
           child: Center(
             child: Text(
               'Рекламный баннер',
               style: TextStyle(
                 color: Colors.white.withOpacity(0.5),
-                fontSize: 16,
+                fontSize: 16.sp,
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -353,15 +354,15 @@ class _BannerSection extends StatelessWidget {
     }
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      padding: EdgeInsets.symmetric(horizontal: 16.w),
       child: Container(
-        height: 120,
+        height: 120.h,
         decoration: BoxDecoration(
           color: const Color(0xFF1A1A1D),
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(12.r),
         ),
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(12.r),
           child: provider.banners.first.imageUrl != null && provider.banners.first.imageUrl!.isNotEmpty
               ? Image.network(
                   provider.banners.first.imageUrl!,
@@ -393,7 +394,7 @@ class _BannerPlaceholder extends StatelessWidget {
           title,
           style: TextStyle(
             color: Colors.white.withOpacity(0.5),
-            fontSize: 16,
+            fontSize: 16.sp,
             fontWeight: FontWeight.w600,
           ),
         ),
@@ -410,7 +411,7 @@ class _NewTodaySection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      padding: EdgeInsets.symmetric(horizontal: 16.w),
       child: Row(
         children: [
           Column(
@@ -420,16 +421,16 @@ class _NewTodaySection extends StatelessWidget {
                 'Новые сегодня',
                 style: Theme.of(context).textTheme.displayLarge?.copyWith(
                       color: Colors.white,
-                      fontSize: 20,
+                      fontSize: 20.sp,
                       fontWeight: FontWeight.w800,
                     ),
               ),
-              const SizedBox(height: 4),
+              SizedBox(height: 4.h),
               Text(
                 'Свежие объявления в вашем районе',
                 style: TextStyle(
                   color: Colors.white.withOpacity(0.6),
-                  fontSize: 14,
+                  fontSize: 14.sp,
                   fontWeight: FontWeight.w400,
                 ),
               ),
@@ -438,11 +439,11 @@ class _NewTodaySection extends StatelessWidget {
           const Spacer(),
           TextButton(
             onPressed: () {},
-            child: const Text(
+            child: Text(
               'Все',
               style: TextStyle(
                 color: Colors.white,
-                fontSize: 14,
+                fontSize: 14.sp,
                 fontWeight: FontWeight.w600,
               ),
             ),
@@ -461,10 +462,10 @@ class _ProductsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (provider.productsStatus == LoadStatus.loading) {
-      return const SliverToBoxAdapter(
+      return SliverToBoxAdapter(
         child: Padding(
-          padding: EdgeInsets.all(16),
-          child: _ProductsShimmer(),
+          padding: EdgeInsets.all(16.w),
+          child: const _ProductsShimmer(),
         ),
       );
     }
@@ -480,7 +481,7 @@ class _ProductsList extends StatelessWidget {
                 provider.productsErrorMessage ?? 'Ошибка загрузки',
                 style: const TextStyle(color: Colors.white70),
               ),
-              const SizedBox(height: 16),
+              SizedBox(height: 16.h),
               ElevatedButton(
                 onPressed: provider.refresh,
                 child: const Text('Повторить'),
@@ -504,12 +505,12 @@ class _ProductsList extends StatelessWidget {
     }
 
     return SliverPadding(
-      padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
+      padding: EdgeInsets.fromLTRB(16.w, 8.h, 16.w, 24.h),
       sliver: SliverGrid(
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
-          crossAxisSpacing: 12,
-          mainAxisSpacing: 12,
+          crossAxisSpacing: 12.w,
+          mainAxisSpacing: 12.h,
           childAspectRatio: 0.75,
         ),
         delegate: SliverChildBuilderDelegate(
@@ -538,14 +539,14 @@ class _ProductCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      borderRadius: BorderRadius.circular(12),
+      borderRadius: BorderRadius.circular(12.r),
       onTap: () {
         // TODO: Переход на детальную страницу товара
       },
       child: Container(
         decoration: BoxDecoration(
           color: const Color(0xFF1A1A1D),
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(12.r),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -554,7 +555,7 @@ class _ProductCard extends StatelessWidget {
               child: Stack(
                 children: [
                   ClipRRect(
-                    borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+                    borderRadius: BorderRadius.vertical(top: Radius.circular(12.r)),
                     child: product.imageUrl != null && product.imageUrl!.isNotEmpty
                         ? Image.network(
                             product.imageUrl!,
@@ -565,19 +566,19 @@ class _ProductCard extends StatelessWidget {
                         : _ProductImagePlaceholder(),
                   ),
                   Positioned(
-                    top: 8,
-                    right: 8,
+                    top: 8.h,
+                    right: 8.w,
                     child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
                       decoration: BoxDecoration(
                         color: Colors.black.withOpacity(0.6),
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(8.r),
                       ),
                       child: Text(
                         product.timeAgo,
-                        style: const TextStyle(
+                        style: TextStyle(
                           color: Colors.white,
-                          fontSize: 11,
+                          fontSize: 11.sp,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
@@ -587,51 +588,51 @@ class _ProductCard extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(10),
+              padding: EdgeInsets.all(10.w),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     product.title,
-                    style: const TextStyle(
+                    style: TextStyle(
                       color: Colors.white,
-                      fontSize: 14,
+                      fontSize: 14.sp,
                       fontWeight: FontWeight.w700,
                     ),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  const SizedBox(height: 6),
+                  SizedBox(height: 6.h),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
                         product.priceText,
-                        style: const TextStyle(
+                        style: TextStyle(
                           color: Colors.white,
-                          fontSize: 16,
+                          fontSize: 16.sp,
                           fontWeight: FontWeight.w800,
                         ),
                       ),
                       IconButton(
                         onPressed: () {},
-                        icon: const Icon(Icons.chat_bubble_outline, color: Colors.white70, size: 18),
+                        icon: Icon(Icons.chat_bubble_outline, color: Colors.white70, size: 18.r),
                         padding: EdgeInsets.zero,
                         constraints: const BoxConstraints(),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 4),
+                  SizedBox(height: 4.h),
                   Row(
                     children: [
-                      const Icon(Icons.location_on, color: Colors.white70, size: 14),
-                      const SizedBox(width: 4),
+                      Icon(Icons.location_on, color: Colors.white70, size: 14.r),
+                      SizedBox(width: 4.w),
                       Expanded(
                         child: Text(
                           product.location,
                           style: TextStyle(
                             color: Colors.white.withOpacity(0.6),
-                            fontSize: 12,
+                            fontSize: 12.sp,
                             fontWeight: FontWeight.w500,
                           ),
                           maxLines: 1,
@@ -656,8 +657,8 @@ class _ProductImagePlaceholder extends StatelessWidget {
     return Container(
       width: double.infinity,
       color: const Color(0xFF0C0C0C),
-      child: const Center(
-        child: Icon(Icons.image_outlined, color: Colors.white30, size: 48),
+      child: Center(
+        child: Icon(Icons.image_outlined, color: Colors.white30, size: 48.r),
       ),
     );
   }
@@ -670,24 +671,24 @@ class _CategoriesShimmer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      padding: EdgeInsets.symmetric(horizontal: 16.w),
       child: Shimmer.fromColors(
         baseColor: Colors.white.withOpacity(0.1),
         highlightColor: Colors.white.withOpacity(0.2),
         child: GridView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 4,
-            crossAxisSpacing: 12,
-            mainAxisSpacing: 12,
+            crossAxisSpacing: 12.w,
+            mainAxisSpacing: 12.h,
             childAspectRatio: 0.85,
           ),
           itemCount: 8,
           itemBuilder: (_, __) => Container(
             decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(12.r),
             ),
           ),
         ),
@@ -702,15 +703,15 @@ class _BannerShimmer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      padding: EdgeInsets.symmetric(horizontal: 16.w),
       child: Shimmer.fromColors(
         baseColor: Colors.white.withOpacity(0.1),
         highlightColor: Colors.white.withOpacity(0.2),
         child: Container(
-          height: 120,
+          height: 120.h,
           decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(12.r),
           ),
         ),
       ),
@@ -729,17 +730,17 @@ class _ProductsShimmer extends StatelessWidget {
       child: GridView.builder(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
-          crossAxisSpacing: 12,
-          mainAxisSpacing: 12,
+          crossAxisSpacing: 12.w,
+          mainAxisSpacing: 12.h,
           childAspectRatio: 0.75,
         ),
         itemCount: 4,
         itemBuilder: (_, __) => Container(
           decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(12.r),
           ),
         ),
       ),

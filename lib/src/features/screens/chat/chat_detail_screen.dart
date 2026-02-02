@@ -12,6 +12,7 @@ import 'package:provider/provider.dart';
 import 'package:record/record.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../chat/models/chat_message.dart';
 import '../../chat/models/chat_thread.dart';
@@ -333,11 +334,11 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
           children: [
             IconButton(
               onPressed: () => context.go('/chats'),
-              icon: const Icon(Icons.arrow_back, color: Colors.white),
+              icon: Icon(Icons.arrow_back_ios, color: Colors.white, size: 22.r),
               padding: EdgeInsets.zero,
               constraints: const BoxConstraints(),
             ),
-            const SizedBox(width: 8),
+            SizedBox(width: 8.w),
             if (thread != null)
               CircleAvatar(
                 backgroundImage: thread.peer.avatarUrl != null
@@ -345,12 +346,12 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                     : null,
                 backgroundColor: const Color(0xFF1A1A1D),
               ),
-            if (thread != null) const SizedBox(width: 10),
+            if (thread != null) SizedBox(width: 10.w),
             Text(
               thread?.peer.name ?? 'Чат',
-              style: const TextStyle(
+              style: TextStyle(
                 color: Colors.white,
-                fontSize: 18,
+                fontSize: 18.sp,
                 fontWeight: FontWeight.w700,
               ),
             ),
@@ -359,11 +360,11 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
         actions: [
           IconButton(
             onPressed: () => _makePhoneCall(thread?.peer.phoneNumber),
-            icon: const Icon(Icons.call_outlined, color: Colors.white),
+            icon: Icon(Icons.call_outlined, color: Colors.white, size: 22.r),
           ),
           IconButton(
             onPressed: () {},
-            icon: const Icon(Icons.more_vert, color: Colors.white),
+            icon: Icon(Icons.more_vert, color: Colors.white, size: 22.r),
           ),
         ],
       ),
@@ -397,7 +398,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                   child: ListView.builder(
                     controller: _scrollController,
                     reverse: true,
-                    padding: const EdgeInsets.fromLTRB(12, 12, 12, 12),
+                    padding: EdgeInsets.fromLTRB(12.w, 12.h, 12.w, 12.h),
                     itemCount: provider.messages.length,
                     itemBuilder: (context, index) {
                       final message = provider.messages.reversed
@@ -416,12 +417,12 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
             ),
           ),
           if (provider.isLoadingMore)
-            const Padding(
-              padding: EdgeInsets.only(bottom: 6),
+            Padding(
+              padding: EdgeInsets.only(bottom: 6.h),
               child: SizedBox(
-                height: 22,
-                width: 22,
-                child: CircularProgressIndicator(
+                height: 22.w,
+                width: 22.w,
+                child: const CircularProgressIndicator(
                   strokeWidth: 2.3,
                   color: Colors.white70,
                 ),
@@ -493,30 +494,30 @@ class _QuickReplies extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 50,
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      height: 50.h,
+      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
         itemCount: _quickReplies.length,
-        separatorBuilder: (_, __) => const SizedBox(width: 8),
+        separatorBuilder: (_, __) => SizedBox(width: 8.w),
         itemBuilder: (context, index) {
           return GestureDetector(
             onTap: () => onTap(_quickReplies[index]),
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
               decoration: BoxDecoration(
                 color: const Color(0xFF16161A),
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(20.r),
                 border: Border.all(
                   color: Colors.white.withOpacity(0.1),
-                  width: 1,
+                  width: 1.w,
                 ),
               ),
               child: Text(
                 _quickReplies[index],
-                style: const TextStyle(
+                style: TextStyle(
                   color: Colors.white,
-                  fontSize: 14,
+                  fontSize: 14.sp,
                   fontWeight: FontWeight.w500,
                 ),
               ),
@@ -546,24 +547,27 @@ class _Bubble extends StatelessWidget {
     final bg = isMine ? const Color(0xFF5E17EB) : const Color(0xFF16161A);
     final align = isMine ? CrossAxisAlignment.end : CrossAxisAlignment.start;
     final radius = BorderRadius.only(
-      topLeft: const Radius.circular(18),
-      topRight: const Radius.circular(18),
-      bottomLeft: isMine ? const Radius.circular(18) : const Radius.circular(6),
-      bottomRight: isMine
-          ? const Radius.circular(6)
-          : const Radius.circular(18),
+      topLeft: Radius.circular(18.r),
+      topRight: Radius.circular(18.r),
+      bottomLeft: isMine ? Radius.circular(18.r) : Radius.circular(6.r),
+      bottomRight: isMine ? Radius.circular(6.r) : Radius.circular(18.r),
     );
 
     return GestureDetector(
       onLongPress: onLongPress,
       child: Padding(
-        padding: EdgeInsets.fromLTRB(isMine ? 60 : 12, 8, isMine ? 12 : 60, 8),
+        padding: EdgeInsets.fromLTRB(
+          isMine ? 60.w : 12.w,
+          8.h,
+          isMine ? 12.w : 60.w,
+          8.h,
+        ),
         child: Column(
           crossAxisAlignment: align,
           children: [
             Container(
               decoration: BoxDecoration(color: bg, borderRadius: radius),
-              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+              padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 12.h),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
@@ -575,7 +579,7 @@ class _Bubble extends StatelessWidget {
                       peerName: peerName,
                       isMine: isMine,
                     ),
-                    const SizedBox(height: 8),
+                    SizedBox(height: 8.h),
                   ],
                   message.type == ChatMessageType.voice
                       ? _VoiceMessagePlayer(message: message, isMine: isMine)
@@ -583,9 +587,9 @@ class _Bubble extends StatelessWidget {
                       ? _ImageMessage(imagePath: message.imagePath ?? '')
                       : Text(
                           message.text,
-                          style: const TextStyle(
+                          style: TextStyle(
                             color: Colors.white,
-                            fontSize: 16,
+                            fontSize: 16.sp,
                             height: 1.35,
                           ),
                         ),
@@ -593,7 +597,7 @@ class _Bubble extends StatelessWidget {
               ),
             ),
             if (message.type != ChatMessageType.voice) ...[
-              const SizedBox(height: 4),
+              SizedBox(height: 4.h),
               Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -601,13 +605,13 @@ class _Bubble extends StatelessWidget {
                     _formatTime(message.createdAt),
                     style: TextStyle(
                       color: Colors.white.withOpacity(0.55),
-                      fontSize: 12,
+                      fontSize: 12.sp,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
                   if (isMine) ...[
-                    const SizedBox(width: 4),
-                    const Icon(Icons.done_all, size: 14, color: Colors.white70),
+                    SizedBox(width: 4.w),
+                    Icon(Icons.done_all, size: 14.r, color: Colors.white70),
                   ],
                 ],
               ),
@@ -709,8 +713,8 @@ class _VoiceMessagePlayerState extends State<_VoiceMessagePlayer> {
         GestureDetector(
           onTap: _togglePlay,
           child: Container(
-            width: 40,
-            height: 40,
+            width: 40.w,
+            height: 40.w,
             decoration: const BoxDecoration(
               color: Colors.white,
               shape: BoxShape.circle,
@@ -720,17 +724,17 @@ class _VoiceMessagePlayerState extends State<_VoiceMessagePlayer> {
               color: widget.isMine
                   ? const Color(0xFF5E17EB)
                   : const Color(0xFF16161A),
-              size: 20,
+              size: 20.r,
             ),
           ),
         ),
-        const SizedBox(width: 12),
+        SizedBox(width: 12.w),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _Waveform(progress: progress, isMine: widget.isMine),
-              const SizedBox(height: 6),
+              SizedBox(height: 6.h),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -738,9 +742,9 @@ class _VoiceMessagePlayerState extends State<_VoiceMessagePlayer> {
                     _isPlaying
                         ? '${_formatDuration(_currentPosition)} / ${_formatDuration(_totalDuration)}'
                         : _formatDuration(_totalDuration),
-                    style: const TextStyle(
+                    style: TextStyle(
                       color: Colors.white,
-                      fontSize: 12,
+                      fontSize: 12.sp,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -751,17 +755,13 @@ class _VoiceMessagePlayerState extends State<_VoiceMessagePlayer> {
                         _formatMessageTime(widget.message.createdAt),
                         style: TextStyle(
                           color: Colors.white.withOpacity(0.7),
-                          fontSize: 12,
+                          fontSize: 12.sp,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
                       if (widget.isMine) ...[
-                        const SizedBox(width: 4),
-                        const Icon(
-                          Icons.done_all,
-                          size: 14,
-                          color: Colors.white70,
-                        ),
+                        SizedBox(width: 4.w),
+                        Icon(Icons.done_all, size: 14.r, color: Colors.white70),
                       ],
                     ],
                   ),
@@ -784,7 +784,7 @@ class _Waveform extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 20,
+      height: 20.h,
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: List.generate(40, (index) {
@@ -792,12 +792,12 @@ class _Waveform extends StatelessWidget {
           final random = (index * 7) % 11;
           final height = 3.0 + random * 1.5;
           return Container(
-            width: 2.5,
-            height: height,
-            margin: const EdgeInsets.symmetric(horizontal: 0.5),
+            width: 2.5.w,
+            height: height.h,
+            margin: EdgeInsets.symmetric(horizontal: 0.5.w),
             decoration: BoxDecoration(
               color: isActive ? Colors.white : Colors.white.withOpacity(0.5),
-              borderRadius: BorderRadius.circular(1.25),
+              borderRadius: BorderRadius.circular(1.25.r),
             ),
           );
         }),
@@ -819,38 +819,40 @@ class _ImageMessage extends StatelessWidget {
     return GestureDetector(
       onTap: () => _showFullScreenImage(context, imagePath),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(8.r),
         child: _isNetworkImage
             ? Image.network(
                 imagePath,
-                width: 200,
-                height: 200,
+                width: 200.w,
+                height: 200.h,
                 fit: BoxFit.cover,
                 errorBuilder: (context, error, stackTrace) {
                   return Container(
-                    width: 200,
-                    height: 200,
+                    width: 200.w,
+                    height: 200.h,
                     color: Colors.grey[800],
-                    child: const Icon(
+                    child: Icon(
                       Icons.broken_image,
                       color: Colors.white70,
+                      size: 22.r,
                     ),
                   );
                 },
               )
             : Image.file(
                 File(imagePath),
-                width: 200,
-                height: 200,
+                width: 200.w,
+                height: 200.h,
                 fit: BoxFit.cover,
                 errorBuilder: (context, error, stackTrace) {
                   return Container(
-                    width: 200,
-                    height: 200,
+                    width: 200.w,
+                    height: 200.h,
                     color: Colors.grey[800],
-                    child: const Icon(
+                    child: Icon(
                       Icons.broken_image,
                       color: Colors.white70,
+                      size: 22.r,
                     ),
                   );
                 },
@@ -952,11 +954,11 @@ class _FullScreenImageView extends StatelessWidget {
                       imagePath,
                       fit: BoxFit.contain,
                       errorBuilder: (context, error, stackTrace) {
-                        return const Center(
+                        return Center(
                           child: Icon(
                             Icons.broken_image,
                             color: Colors.white70,
-                            size: 64,
+                            size: 64.r,
                           ),
                         );
                       },
@@ -965,11 +967,11 @@ class _FullScreenImageView extends StatelessWidget {
                       File(imagePath),
                       fit: BoxFit.contain,
                       errorBuilder: (context, error, stackTrace) {
-                        return const Center(
+                        return Center(
                           child: Icon(
                             Icons.broken_image,
                             color: Colors.white70,
-                            size: 64,
+                            size: 64.r,
                           ),
                         );
                       },
@@ -980,20 +982,28 @@ class _FullScreenImageView extends StatelessWidget {
             child: Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.all(16),
+                  padding: EdgeInsets.all(16.w),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       IconButton(
                         onPressed: () => Navigator.of(context).pop(),
-                        icon: const Icon(Icons.arrow_back, color: Colors.white),
+                        icon: Icon(
+                          Icons.arrow_back,
+                          color: Colors.white,
+                          size: 22.r,
+                        ),
                         style: IconButton.styleFrom(
                           backgroundColor: Colors.black54,
                         ),
                       ),
                       IconButton(
                         onPressed: () => _saveImage(context),
-                        icon: const Icon(Icons.download, color: Colors.white),
+                        icon: Icon(
+                          Icons.download,
+                          color: Colors.white,
+                          size: 22.r,
+                        ),
                         style: IconButton.styleFrom(
                           backgroundColor: Colors.black54,
                         ),
@@ -1050,7 +1060,7 @@ class _InputBarState extends State<_InputBar> {
         decoration: BoxDecoration(
           color: const Color(0xFF0B0B0C),
           border: Border(
-            top: BorderSide(color: Colors.white.withOpacity(0.08), width: 1),
+            top: BorderSide(color: Colors.white.withOpacity(0.08), width: 1.w),
           ),
         ),
         child: Column(
@@ -1058,42 +1068,42 @@ class _InputBarState extends State<_InputBar> {
           children: [
             if (widget.isRecording)
               Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 12,
-                ),
+                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
                 color: const Color(0xFF16161A),
                 child: Row(
                   children: [
                     Container(
-                      width: 12,
-                      height: 12,
+                      width: 12.r,
+                      height: 12.r,
                       decoration: const BoxDecoration(
                         color: Colors.red,
                         shape: BoxShape.circle,
                       ),
                     ),
-                    const SizedBox(width: 8),
+                    SizedBox(width: 8.w),
                     Text(
                       widget.formatDuration(widget.recordingDuration),
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: Colors.white,
-                        fontSize: 16,
+                        fontSize: 16.sp,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
                     const Spacer(),
                     TextButton(
                       onPressed: () => widget.onVoiceStop(send: false),
-                      child: const Text(
+                      child: Text(
                         'Отменить',
-                        style: TextStyle(color: Colors.white70),
+                        style: TextStyle(
+                          color: Colors.white70,
+                          fontSize: 14.sp,
+                        ),
                       ),
                     ),
-                    const SizedBox(width: 8),
+                    SizedBox(width: 8.w),
                     IconButton(
                       onPressed: () => widget.onVoiceStop(send: true),
-                      icon: const Icon(Icons.send, color: Colors.white),
+                      icon: Icon(Icons.send, color: Colors.white, size: 20.r),
                       style: IconButton.styleFrom(
                         backgroundColor: const Color(0xFF5E17EB),
                       ),
@@ -1102,7 +1112,7 @@ class _InputBarState extends State<_InputBar> {
                 ),
               ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(12, 8, 12, 12),
+              padding: EdgeInsets.fromLTRB(12.w, 8.h, 12.w, 12.h),
               child: Row(
                 children: [
                   IconButton(
@@ -1112,6 +1122,7 @@ class _InputBarState extends State<_InputBar> {
                       color: widget.isRecording
                           ? Colors.white.withOpacity(0.3)
                           : Colors.white70,
+                      size: 22.r,
                     ),
                   ),
                   Expanded(
@@ -1131,24 +1142,24 @@ class _InputBarState extends State<_InputBar> {
                         ),
                         filled: true,
                         fillColor: const Color(0xFF16161A),
-                        contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 14,
-                          vertical: 12,
+                        contentPadding: EdgeInsets.symmetric(
+                          horizontal: 14.w,
+                          vertical: 12.h,
                         ),
                         border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(14),
+                          borderRadius: BorderRadius.circular(14.r),
                           borderSide: BorderSide(
                             color: Colors.white.withOpacity(0.08),
                           ),
                         ),
                         enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(14),
+                          borderRadius: BorderRadius.circular(14.r),
                           borderSide: BorderSide(
                             color: Colors.white.withOpacity(0.08),
                           ),
                         ),
                         focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(14),
+                          borderRadius: BorderRadius.circular(14.r),
                           borderSide: const BorderSide(
                             color: Color(0xFF5E17EB),
                           ),
@@ -1156,7 +1167,7 @@ class _InputBarState extends State<_InputBar> {
                       ),
                     ),
                   ),
-                  const SizedBox(width: 8),
+                  SizedBox(width: 8.w),
                   if (widget.hasText || widget.isRecording)
                     IconButton.filled(
                       style: IconButton.styleFrom(
@@ -1168,6 +1179,7 @@ class _InputBarState extends State<_InputBar> {
                       icon: Icon(
                         widget.isRecording ? Icons.send : Icons.send,
                         color: Colors.white,
+                        size: 20.r,
                       ),
                     )
                   else
@@ -1185,15 +1197,15 @@ class _InputBarState extends State<_InputBar> {
                         widget.onVoiceStop(send: false);
                       },
                       child: Container(
-                        width: 48,
-                        height: 48,
+                        width: 48.w,
+                        height: 48.w,
                         decoration: BoxDecoration(
                           color: _isPressing
                               ? const Color(0xFF5E17EB).withOpacity(0.7)
                               : const Color(0xFF5E17EB),
                           shape: BoxShape.circle,
                         ),
-                        child: const Icon(Icons.mic, color: Colors.white),
+                        child: Icon(Icons.mic, color: Colors.white, size: 22.r),
                       ),
                     ),
                 ],
@@ -1226,35 +1238,35 @@ class _ErrorState extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24),
+        padding: EdgeInsets.symmetric(horizontal: 24.w),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(
               Icons.wifi_off,
               color: Colors.white.withOpacity(0.8),
-              size: 44,
+              size: 44.r,
             ),
-            const SizedBox(height: 12),
+            SizedBox(height: 12.h),
             Text(
               'Не удалось загрузить сообщения',
-              style: const TextStyle(
+              style: TextStyle(
                 color: Colors.white,
-                fontSize: 16,
+                fontSize: 16.sp,
                 fontWeight: FontWeight.w700,
               ),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 8),
+            SizedBox(height: 8.h),
             Text(
               message,
               style: TextStyle(
                 color: Colors.white.withOpacity(0.6),
-                fontSize: 14,
+                fontSize: 14.sp,
               ),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 12),
+            SizedBox(height: 12.h),
             FilledButton(
               style: FilledButton.styleFrom(
                 backgroundColor: Colors.white,
@@ -1308,16 +1320,16 @@ class _ReplyQuote extends StatelessWidget {
     final senderName = repliedMessage.isMine ? 'Вы' : peerName;
 
     return Container(
-      padding: const EdgeInsets.all(8),
+      padding: EdgeInsets.all(8.w),
       decoration: BoxDecoration(
         color: Colors.white.withOpacity(0.15),
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(8.r),
         border: Border(
           left: BorderSide(
             color: isMine
                 ? Colors.white.withOpacity(0.5)
                 : const Color(0xFF5E17EB),
-            width: 3,
+            width: 3.w,
           ),
         ),
       ),
@@ -1328,16 +1340,16 @@ class _ReplyQuote extends StatelessWidget {
             senderName,
             style: TextStyle(
               color: Colors.white.withOpacity(0.9),
-              fontSize: 13,
+              fontSize: 13.sp,
               fontWeight: FontWeight.w600,
             ),
           ),
-          const SizedBox(height: 2),
+          SizedBox(height: 2.h),
           Text(
             quoteText,
             style: TextStyle(
               color: Colors.white.withOpacity(0.8),
-              fontSize: 13,
+              fontSize: 13.sp,
               fontWeight: FontWeight.w400,
             ),
             maxLines: 2,
@@ -1367,7 +1379,7 @@ class _ReplyPreview extends StatelessWidget {
     }
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
       decoration: BoxDecoration(
         color: const Color(0xFF16161A),
         border: Border(
@@ -1375,7 +1387,7 @@ class _ReplyPreview extends StatelessWidget {
             color: message.isMine
                 ? const Color(0xFF5E17EB)
                 : Colors.white.withOpacity(0.3),
-            width: 3,
+            width: 3.w,
           ),
         ),
       ),
@@ -1389,16 +1401,16 @@ class _ReplyPreview extends StatelessWidget {
                   message.isMine ? 'Вы' : 'Отвечаете',
                   style: TextStyle(
                     color: Colors.white.withOpacity(0.7),
-                    fontSize: 12,
+                    fontSize: 12.sp,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
-                const SizedBox(height: 2),
+                SizedBox(height: 2.h),
                 Text(
                   previewText,
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: Colors.white,
-                    fontSize: 14,
+                    fontSize: 14.sp,
                     fontWeight: FontWeight.w500,
                   ),
                   maxLines: 1,
@@ -1409,7 +1421,7 @@ class _ReplyPreview extends StatelessWidget {
           ),
           IconButton(
             onPressed: onCancel,
-            icon: const Icon(Icons.close, color: Colors.white70, size: 20),
+            icon: Icon(Icons.close, color: Colors.white70, size: 20.r),
             padding: EdgeInsets.zero,
             constraints: const BoxConstraints(),
           ),
@@ -1436,32 +1448,35 @@ class _MessageActionsSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 8),
+        padding: EdgeInsets.symmetric(vertical: 8.h),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             ListTile(
-              leading: const Icon(Icons.reply, color: Colors.white),
-              title: const Text(
+              leading: Icon(Icons.reply, color: Colors.white, size: 22.r),
+              title: Text(
                 'Ответить',
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(color: Colors.white, fontSize: 16.sp),
               ),
               onTap: onReply,
             ),
             ListTile(
-              leading: const Icon(Icons.copy, color: Colors.white),
-              title: const Text(
+              leading: Icon(Icons.copy, color: Colors.white, size: 22.r),
+              title: Text(
                 'Копировать',
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(color: Colors.white, fontSize: 16.sp),
               ),
               onTap: onCopy,
             ),
             ListTile(
-              leading: const Icon(Icons.delete, color: Colors.red),
-              title: const Text('Удалить', style: TextStyle(color: Colors.red)),
+              leading: Icon(Icons.delete, color: Colors.red, size: 22.r),
+              title: Text(
+                'Удалить',
+                style: TextStyle(color: Colors.red, fontSize: 16.sp),
+              ),
               onTap: onDelete,
             ),
-            const SizedBox(height: 8),
+            SizedBox(height: 8.h),
           ],
         ),
       ),
