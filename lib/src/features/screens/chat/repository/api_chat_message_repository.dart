@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import '../../../core/service/api_service.dart';
+import '../../../../core/service/api_service.dart';
 import '../models/chat_message.dart';
 import 'chat_message_repository.dart';
 
@@ -16,10 +16,7 @@ class ApiChatMessageRepository implements ChatMessageRepository {
     final raw = await ApiService.request(
       '/chats/$threadId/messages',
       method: Method.get,
-      queryParameters: {
-        'limit': limit,
-        if (cursor != null) 'cursor': cursor,
-      },
+      queryParameters: {'limit': limit, if (cursor != null) 'cursor': cursor},
     );
 
     final decoded = jsonDecode(raw);
@@ -48,10 +45,7 @@ class ApiChatMessageRepository implements ChatMessageRepository {
     final raw = await ApiService.request(
       '/chats/$threadId/messages',
       method: Method.post,
-      body: {
-        'text': text,
-        if (replyToId != null) 'replyToId': replyToId,
-      },
+      body: {'text': text, if (replyToId != null) 'replyToId': replyToId},
     );
 
     final decoded = jsonDecode(raw);
@@ -72,11 +66,7 @@ class ApiChatMessageRepository implements ChatMessageRepository {
     final raw = await ApiService.request(
       '/chats/$threadId/messages',
       method: Method.post,
-      body: {
-        'text': '[Фото]',
-        'imagePath': imagePath,
-        'type': 'image',
-      },
+      body: {'text': '[Фото]', 'imagePath': imagePath, 'type': 'image'},
     );
 
     final decoded = jsonDecode(raw);
@@ -114,4 +104,3 @@ class ApiChatMessageRepository implements ChatMessageRepository {
     return ChatMessage.fromJson(decoded);
   }
 }
-

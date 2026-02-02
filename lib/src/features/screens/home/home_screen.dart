@@ -4,9 +4,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../providers/home_provider.dart';
-import '../../home/models/product.dart';
-import '../../home/models/category.dart';
-import '../../home/models/location.dart';
+import 'models/category.dart';
+import 'models/location.dart';
+import 'models/product.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -65,19 +65,19 @@ class _HomeScreenState extends State<HomeScreen> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                              _SearchBar(
-                                controller: _searchController,
-                                onSearchChanged: (query) => provider.setSearchQuery(query),
-                              ),
-                              SizedBox(height: 16.h),
-                              _CategoriesSection(provider: provider),
-                              SizedBox(height: 16.h),
-                              _BannerSection(provider: provider),
-                              SizedBox(height: 24.h),
-                              _NewTodaySection(provider: provider),
-                            ],
+                                _SearchBar(
+                                  controller: _searchController,
+                                  onSearchChanged: (query) => provider.setSearchQuery(query),
+                                ),
+                                const SizedBox(height: 16),
+                                _CategoriesSection(provider: provider),
+                                const SizedBox(height: 16),
+                                _BannerSection(provider: provider),
+                                const SizedBox(height: 24),
+                                _NewTodaySection(provider: provider),
+                              ],
+                            ),
                           ),
-                        ),
                           _ProductsList(provider: provider),
                         ],
                       ),
@@ -113,10 +113,10 @@ class _Header extends StatelessWidget {
           Text(
             'Sotamiz',
             style: Theme.of(context).textTheme.displayLarge?.copyWith(
-              color: Colors.white,
-              fontSize: 24.sp,
-              fontWeight: FontWeight.w800,
-            ),
+                  color: Colors.white,
+                  fontSize: 24,
+                  fontWeight: FontWeight.w800,
+                ),
           ),
           const Spacer(),
           GestureDetector(
@@ -136,8 +136,8 @@ class _Header extends StatelessWidget {
                     fontWeight: FontWeight.w600,
                   ),
                 ),
-                SizedBox(width: 4.w),
-                Icon(Icons.keyboard_arrow_down, color: Colors.white, size: 18.r),
+                const SizedBox(width: 4),
+                const Icon(Icons.keyboard_arrow_down, color: Colors.white, size: 18),
               ],
             ),
           ),
@@ -173,10 +173,7 @@ class _Header extends StatelessWidget {
 }
 
 class _SearchBar extends StatelessWidget {
-  const _SearchBar({
-    required this.controller,
-    required this.onSearchChanged,
-  });
+  const _SearchBar({required this.controller, required this.onSearchChanged});
 
   final TextEditingController controller;
   final Function(String?) onSearchChanged;
@@ -199,7 +196,7 @@ class _SearchBar extends StatelessWidget {
             borderRadius: BorderRadius.circular(12.r),
             borderSide: BorderSide.none,
           ),
-          contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         ),
       ),
     );
@@ -298,9 +295,9 @@ class _CategoryItem extends StatelessWidget {
             Icon(
               _getIcon(category.icon),
               color: Colors.white,
-              size: 28.r,
+              size: 28,
             ),
-            SizedBox(height: 8.h),
+            const SizedBox(height: 8),
             Text(
               category.name,
               textAlign: TextAlign.center,
@@ -330,7 +327,8 @@ class _BannerSection extends StatelessWidget {
       return const _BannerShimmer();
     }
 
-    if (provider.bannersStatus == LoadStatus.error || provider.banners.isEmpty) {
+    if (provider.bannersStatus == LoadStatus.error ||
+        provider.banners.isEmpty) {
       return Padding(
         padding: EdgeInsets.symmetric(horizontal: 16.w),
         child: Container(
@@ -362,7 +360,7 @@ class _BannerSection extends StatelessWidget {
           borderRadius: BorderRadius.circular(12.r),
         ),
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(12.r),
+          borderRadius: BorderRadius.circular(12),
           child: provider.banners.first.imageUrl != null && provider.banners.first.imageUrl!.isNotEmpty
               ? Image.network(
                   provider.banners.first.imageUrl!,
@@ -421,7 +419,7 @@ class _NewTodaySection extends StatelessWidget {
                 'Новые сегодня',
                 style: Theme.of(context).textTheme.displayLarge?.copyWith(
                       color: Colors.white,
-                      fontSize: 20.sp,
+                      fontSize: 20,
                       fontWeight: FontWeight.w800,
                     ),
               ),
@@ -462,10 +460,10 @@ class _ProductsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (provider.productsStatus == LoadStatus.loading) {
-      return SliverToBoxAdapter(
+      return const SliverToBoxAdapter(
         child: Padding(
-          padding: EdgeInsets.all(16.w),
-          child: const _ProductsShimmer(),
+          padding: EdgeInsets.all(16),
+          child: _ProductsShimmer(),
         ),
       );
     }
@@ -518,7 +516,9 @@ class _ProductsList extends StatelessWidget {
             if (index == provider.products.length) {
               if (provider.canLoadMore) {
                 provider.loadMore();
-                return Center(child: CircularProgressIndicator(color: Colors.white));
+                return Center(
+                  child: CircularProgressIndicator(color: Colors.white),
+                );
               }
               return const SizedBox.shrink();
             }
@@ -555,13 +555,14 @@ class _ProductCard extends StatelessWidget {
               child: Stack(
                 children: [
                   ClipRRect(
-                    borderRadius: BorderRadius.vertical(top: Radius.circular(12.r)),
+                    borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
                     child: product.imageUrl != null && product.imageUrl!.isNotEmpty
                         ? Image.network(
                             product.imageUrl!,
                             width: double.infinity,
                             fit: BoxFit.cover,
-                            errorBuilder: (_, __, ___) => _ProductImagePlaceholder(),
+                            errorBuilder: (_, __, ___) =>
+                                _ProductImagePlaceholder(),
                           )
                         : _ProductImagePlaceholder(),
                   ),
@@ -569,7 +570,7 @@ class _ProductCard extends StatelessWidget {
                     top: 8.h,
                     right: 8.w,
                     child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                       decoration: BoxDecoration(
                         color: Colors.black.withOpacity(0.6),
                         borderRadius: BorderRadius.circular(8.r),
@@ -616,7 +617,7 @@ class _ProductCard extends StatelessWidget {
                       ),
                       IconButton(
                         onPressed: () {},
-                        icon: Icon(Icons.chat_bubble_outline, color: Colors.white70, size: 18.r),
+                        icon: const Icon(Icons.chat_bubble_outline, color: Colors.white70, size: 18),
                         padding: EdgeInsets.zero,
                         constraints: const BoxConstraints(),
                       ),
@@ -625,8 +626,8 @@ class _ProductCard extends StatelessWidget {
                   SizedBox(height: 4.h),
                   Row(
                     children: [
-                      Icon(Icons.location_on, color: Colors.white70, size: 14.r),
-                      SizedBox(width: 4.w),
+                      const Icon(Icons.location_on, color: Colors.white70, size: 14),
+                      const SizedBox(width: 4),
                       Expanded(
                         child: Text(
                           product.location,

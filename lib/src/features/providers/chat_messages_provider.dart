@@ -1,13 +1,13 @@
 import 'package:flutter/foundation.dart';
 
-import '../chat/models/chat_message.dart';
-import '../chat/repository/chat_message_repository.dart';
+import '../screens/chat/models/chat_message.dart';
+import '../screens/chat/repository/chat_message_repository.dart';
 
 enum ChatMessagesStatus { idle, loading, loaded, error }
 
 class ChatMessagesProvider extends ChangeNotifier {
   ChatMessagesProvider({required ChatMessageRepository repository})
-      : _repository = repository;
+    : _repository = repository;
 
   final ChatMessageRepository _repository;
 
@@ -25,7 +25,11 @@ class ChatMessagesProvider extends ChangeNotifier {
     errorMessage = null;
     notifyListeners();
     try {
-      final page = await _repository.fetchMessages(threadId: threadId, cursor: null, limit: 20);
+      final page = await _repository.fetchMessages(
+        threadId: threadId,
+        cursor: null,
+        limit: 20,
+      );
       messages = page.items;
       _cursor = page.nextCursor;
       status = ChatMessagesStatus.loaded;
@@ -39,7 +43,11 @@ class ChatMessagesProvider extends ChangeNotifier {
 
   Future<void> refresh(String threadId) async {
     try {
-      final page = await _repository.fetchMessages(threadId: threadId, cursor: null, limit: 20);
+      final page = await _repository.fetchMessages(
+        threadId: threadId,
+        cursor: null,
+        limit: 20,
+      );
       messages = page.items;
       _cursor = page.nextCursor;
       status = ChatMessagesStatus.loaded;
@@ -57,7 +65,11 @@ class ChatMessagesProvider extends ChangeNotifier {
     _isLoadingMore = true;
     notifyListeners();
     try {
-      final page = await _repository.fetchMessages(threadId: threadId, cursor: _cursor, limit: 20);
+      final page = await _repository.fetchMessages(
+        threadId: threadId,
+        cursor: _cursor,
+        limit: 20,
+      );
       messages = [...messages, ...page.items];
       _cursor = page.nextCursor;
       _isLoadingMore = false;
@@ -87,7 +99,10 @@ class ChatMessagesProvider extends ChangeNotifier {
 
   Future<void> sendImage(String threadId, String imagePath) async {
     try {
-      final sent = await _repository.sendImage(threadId: threadId, imagePath: imagePath);
+      final sent = await _repository.sendImage(
+        threadId: threadId,
+        imagePath: imagePath,
+      );
       messages = [...messages, sent];
       notifyListeners();
     } catch (e) {
@@ -97,7 +112,11 @@ class ChatMessagesProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> sendVoiceMessage(String threadId, String audioPath, {Duration? duration}) async {
+  Future<void> sendVoiceMessage(
+    String threadId,
+    String audioPath, {
+    Duration? duration,
+  }) async {
     try {
       final sent = await _repository.sendVoiceMessage(
         threadId: threadId,
@@ -113,4 +132,3 @@ class ChatMessagesProvider extends ChangeNotifier {
     }
   }
 }
-

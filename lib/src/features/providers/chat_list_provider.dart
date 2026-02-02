@@ -1,12 +1,13 @@
 import 'package:flutter/foundation.dart';
 
-import '../chat/models/chat_thread.dart';
-import '../chat/repository/chat_repository.dart';
+import '../screens/chat/models/chat_thread.dart';
+import '../screens/chat/repository/chat_repository.dart';
 
 enum LoadStatus { idle, loading, loaded, error }
 
 class ChatListProvider extends ChangeNotifier {
-  ChatListProvider({required ChatRepository repository}) : _repository = repository;
+  ChatListProvider({required ChatRepository repository})
+    : _repository = repository;
 
   final ChatRepository _repository;
 
@@ -72,5 +73,3 @@ class ChatListProvider extends ChangeNotifier {
     }
   }
 }
-
-

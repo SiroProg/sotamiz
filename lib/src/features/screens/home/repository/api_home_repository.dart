@@ -1,10 +1,10 @@
 import 'dart:convert';
 
-import '../../../core/service/api_service.dart';
-import '../models/product.dart';
-import '../models/category.dart';
+import '../../../../core/service/api_service.dart';
 import '../models/banner.dart';
+import '../models/category.dart';
 import '../models/location.dart';
+import '../models/product.dart';
 import 'home_repository.dart';
 
 /// Реализация репозитория, готовая к бэкенду.
@@ -13,10 +13,7 @@ class ApiHomeRepository implements HomeRepository {
 
   @override
   Future<List<ProductCategory>> fetchCategories() async {
-    final raw = await ApiService.request(
-      '/categories',
-      method: Method.get,
-    );
+    final raw = await ApiService.request('/categories', method: Method.get);
 
     final decoded = jsonDecode(raw);
     if (decoded is! Map<String, dynamic>) {
@@ -32,11 +29,8 @@ class ApiHomeRepository implements HomeRepository {
   }
 
   @override
-  Future<List<Banner>> fetchBanners() async {
-    final raw = await ApiService.request(
-      '/banners',
-      method: Method.get,
-    );
+  Future<List<Baner>> fetchBanners() async {
+    final raw = await ApiService.request('/banners', method: Method.get);
 
     final decoded = jsonDecode(raw);
     if (decoded is! Map<String, dynamic>) {
@@ -45,7 +39,7 @@ class ApiHomeRepository implements HomeRepository {
 
     final items = (decoded['items'] as List? ?? [])
         .whereType<Map>()
-        .map((e) => Banner.fromJson(e.cast<String, dynamic>()))
+        .map((e) => Baner.fromJson(e.cast<String, dynamic>()))
         .toList();
 
     return items;
@@ -93,10 +87,7 @@ class ApiHomeRepository implements HomeRepository {
 
   @override
   Future<List<Location>> fetchLocations() async {
-    final raw = await ApiService.request(
-      '/locations',
-      method: Method.get,
-    );
+    final raw = await ApiService.request('/locations', method: Method.get);
 
     final decoded = jsonDecode(raw);
     if (decoded is! Map<String, dynamic>) {

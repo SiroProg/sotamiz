@@ -4,8 +4,8 @@ import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../chat/models/chat_thread.dart';
 import '../../providers/chat_list_provider.dart';
+import 'models/chat_thread.dart';
 
 class ChatListScreen extends StatelessWidget {
   const ChatListScreen({super.key});
